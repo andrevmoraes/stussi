@@ -2,11 +2,12 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>O Multiverso da Stussi™ Deluxe</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+html,body{width:100%;height:100%;overflow:hidden}
 body{
 font-family:Poppins,sans-serif;
 background:linear-gradient(135deg,#16001f,#34104d,#5f189a);
@@ -191,41 +192,6 @@ transform:translateX(-4px) scale(1.3);
 .nav-btn:hover:nth-child(2) .icon{
 transform:translateX(4px) scale(1.3);
 }
-.auto-btn{
-border:2px solid rgba(217,70,239,.5) !important;
-background:linear-gradient(135deg,rgba(217,70,239,.3),rgba(168,85,247,.2)) !important;
-padding:12px 24px !important;margin:0 !important;
-color:white;border-radius:50px;
-transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-position:relative;overflow:hidden;
-box-shadow:0 4px 20px rgba(217,70,239,.3),inset 0 0 20px rgba(255,255,255,.1);
-font-weight:600;font-size:1rem;
-}
-.auto-btn .play-icon{
-display:inline-block;
-margin-right:6px;
-transition:all 0.3s ease;
-animation:playPulse 1.5s ease-in-out infinite;
-font-size:1.1em;
-}
-.auto-btn:hover{
-background:linear-gradient(135deg,rgba(217,70,239,.5),rgba(168,85,247,.3)) !important;
-border-color:rgba(217,70,239,.8) !important;
-box-shadow:0 8px 30px rgba(217,70,239,.5),inset 0 0 30px rgba(255,255,255,.15);
-transform:translateY(-3px) scale(1.05);
-}
-.auto-btn:hover .play-icon{
-animation:playBounce 0.6s ease-in-out;
-}
-@keyframes playPulse{
-0%{opacity:0.6}
-50%{opacity:1}
-100%{opacity:0.6}
-}
-@keyframes playBounce{
-0%,100%{transform:scale(1)}
-50%{transform:scale(1.4)}
-}
 .dot{
 display:inline-block;width:12px;height:12px;border-radius:50%;
 background:rgba(255,255,255,.25);margin:0 8px;
@@ -250,7 +216,6 @@ p{font-size:0.95rem}
 button{padding:12px 16px;font-size:0.9rem}
 .button-group{gap:6px;padding:10px;margin:0 8px}
 .nav-btn{padding:9px 14px !important;font-size:0.85rem}
-.auto-btn{padding:10px 18px !important;font-size:0.9rem}
 }
 @media (max-width:480px){
 h1{font-size:1.8rem}
@@ -263,9 +228,8 @@ p{font-size:0.85rem}
 .rank{font-size:1.2rem;margin:8px}
 button{padding:10px 14px;font-size:0.8rem;margin:4px}
 .nav{padding:20px 10px 10px}
-.button-group{flex-direction:column;gap:6px;padding:8px;margin:0 auto 10px}
-.nav-btn{padding:10px 12px !important;font-size:0.8rem;width:100%}
-.auto-btn{padding:10px 12px !important;font-size:0.8rem;width:100%;display:block;margin:0 auto}
+.button-group{gap:6px;padding:8px;margin:0 auto 10px}
+.nav-btn{padding:10px 12px !important;font-size:0.8rem}
 }
 </style>
 </head>
@@ -381,9 +345,8 @@ STUSSI<br><br>
 <div class="pagination" id="pagination"></div>
 <div class="button-group">
 <button class="nav-btn" onclick="prev()"><span class="icon">⬅</span> Voltar</button>
-<button class="nav-btn" onclick="next()">Próximo <span class="icon">➡</span></button>
+<button class="nav-btn" onclick="next()">Avançar <span class="icon">➡</span></button>
 </div>
-<button class="auto-btn" onclick="autoPlay()"><span class="play-icon">▶</span> Auto</button>
 </div>
 
 <script>
@@ -420,6 +383,22 @@ document.addEventListener('touchend',e=>{
 const touchEndX=e.changedTouches[0].clientX;
 if(touchStartX-touchEndX>50)next();
 if(touchEndX-touchStartX>50)prev();
+});
+
+// Bloquear zoom no mobile
+document.addEventListener('touchmove',e=>{
+if(e.touches.length>1)e.preventDefault();
+},{passive:false});
+
+document.addEventListener('gesturestart',e=>e.preventDefault());
+
+let lastTouchTime=0;
+document.addEventListener('touchend',e=>{
+const now=Date.now();
+if(now-lastTouchTime<300){
+e.preventDefault();
+}
+lastTouchTime=now;
 });
 
 const names=["Stussi","Stuqui","Stutchi","Stûkkchí","Mãestussi","Stussimãe","Stumãe","Stussíssima","Stusselência","Perfeistussi","Santussi","Fadastussi","Patrussi"];
